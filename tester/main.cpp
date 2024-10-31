@@ -1,6 +1,2 @@
-#include "TestRequest.hpp"
 
-int main() {
-  TestRequest testRequest;
-  return 0;
-}
+int main() { return 0; }

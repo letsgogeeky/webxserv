@@ -4,8 +4,12 @@ CFLAGS      	:=  -std=c++17 -g -Wall -Wextra -Werror -fsanitize=address
 INCLUDE_DIRS	:=	-I./include -I./tester                                  		\
 					-I./include/parseConfigFile/semanticAnalysis               		\
 					-I./include/parseConfigFile/tokenizing							\
-					-I./include/parseConfigFile										
-TESTER_MAIN 	:= tester/main.cpp tester/TestCase.cpp tester/TestRequest.cpp
+					-I./include/parseConfigFile										\
+					-I./include/cgi													\
+					-I./include/log													\
+					-I./include/response											\
+					-I./include/networking		
+TESTER_MAIN 	:= tests/test_server.cpp
 SRC_MAIN 		:= main.cpp
 
 SRC_DIR			:= .
@@ -72,7 +76,7 @@ clean:
 fclean:
 	@echo "$(UP)$(BEGIN)$(CUT)$(ORANGE)🔥Full clean, removing executable...$(RESET)"
 	@rm -rf $(OBJ_DIR)
-	@rm -f $(NAME) $(TEST_NAME)
+	@rm -f $(NAME)
 	@rm -rf logs
 	@rm -rf uploads
 	@if [ ! -d "logs" ]; then mkdir logs; fi
