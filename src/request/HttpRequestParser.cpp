@@ -232,7 +232,7 @@ bool HttpRequestParser::canHaveBody() {
          _request.getMethodEnum() == HttpRequestMethod::PATCH;
 }
 
-int HttpRequestParser::parse(std::shared_ptr<TokenBucket>& rateLimiter) {
+int HttpRequestParser::parse(std::shared_ptr<TokenBucket> &rateLimiter) {
   std::stringstream ss(_raw);
   std::string requestLine = getLineSanitized(ss);
   if (!parseRequestLine((char *)requestLine.c_str(), requestLine.length())) {
@@ -240,8 +240,7 @@ int HttpRequestParser::parse(std::shared_ptr<TokenBucket>& rateLimiter) {
     return getStatusCode();
   }
   _locationConfig = getMostRelevantLocation();
-  if (!rateLimiter->consume(1))
-  {
+  if (!rateLimiter->consume(1)) {
     _request.setHandler(HttpRequestHandler::ERROR);
     setStatusCode(429);
     return 429;  // Too Many Requests

@@ -1,6 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -13,7 +14,6 @@
 #include "../../include/rl/algorithms/TokenBucket.hpp"
 #include "ServerContext.hpp"
 #include "SocketExceptions.hpp"
-#include <netinet/in.h>
 
 class Client {
  public:
