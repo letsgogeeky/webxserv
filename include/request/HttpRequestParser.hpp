@@ -5,6 +5,7 @@
 #include <set>
 #include <string>
 // you are not using the sstream header direcly anywhere here
+#include <TokenBucket.hpp>
 #include <cstring>
 #include <iostream>
 #include <memory>
@@ -25,7 +26,7 @@ class HttpRequestParser {
                     std::shared_ptr<ServerContext> serverContext);
   HttpRequestParser();
   HttpRequest getHttpRequest();
-  int parse();
+  int parse(std::shared_ptr<TokenBucket>& rateLimiter);
   int handshake();
   int getStatusCode();
   std::string getLocation();

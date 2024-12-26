@@ -25,7 +25,19 @@ Client::Client(int fd, std::shared_ptr<ServerContext> context) : _fd(fd) {
   _shouldSendContinue = false;
   _isReadyForRequest = true;
   _lastRequestTime = std::chrono::system_clock::now();
+  _rateLimiter = std::make_shared<TokenBucket>(4, 2);
 }
+
+// Client::Client(sockaddr_in address, int fd,
+//                std::shared_ptr<ServerContext> context)
+//     : _fd(fd), _address(address) {
+//   _context = context;
+//   fcntl(fd, F_SETFL, O_NONBLOCK);
+//   _isReadyForResponse = false;
+//   _shouldSendContinue = false;
+//   _isReadyForRequest = true;
+//   _lastRequestTime = std::chrono::system_clock::now();
+// }
 
 Client::~Client() { close(_fd); }
 
@@ -377,7 +389,7 @@ bool Client::handleRequest() {
       buffer[bytes_read] = '\0';
     }
     _parser = HttpRequestParser(raw, _fd, _context);
-    _parser.parse();
+    _parser.parse(_rateLimiter);
     Log::getInstance().debug("Parsed request: " + raw.substr(0, 100));
     if (_parser.status == HttpRequestParseStatus::EXPECT_CONTINUE) {
       Log::getInstance().debug("Request is to be continued: " +
