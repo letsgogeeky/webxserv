@@ -140,13 +140,13 @@ bool Server::processClientRequest(std::shared_ptr<Client> client) {
   try {
     if (!client->handleRequest()) {
       cleanupClient(client);
-	  return false;
+      return false;
     }
   } catch (const std::exception& e) {
     std::cerr << "Exception caught while handling request: " << e.what()
               << std::endl;
     cleanupClient(client);
-	return false;
+    return false;
   }
   return true;
 }
@@ -162,7 +162,7 @@ void Server::handlePollInEvent(int fd, short& events) {
   if (isServerSocket(fd)) {
     handleNewConnection(fd);
   } else {
-	bool success = false;
+    bool success = false;
     auto client = _fdToClientMap.find(fd);
     if (client != _fdToClientMap.end() && client->second->isReadyForRequest()) {
       success = handleClientRequest(fd);

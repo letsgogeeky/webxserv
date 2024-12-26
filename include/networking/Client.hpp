@@ -1,6 +1,7 @@
 #ifndef CLIENT_H
 #define CLIENT_H
 
+#include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
 
@@ -10,12 +11,15 @@
 #include "../../include/Event.hpp"
 #include "../../include/request/HttpRequestParser.hpp"
 #include "../../include/response/HttpResponse.hpp"
+#include "../../include/rl/algorithms/TokenBucket.hpp"
 #include "ServerContext.hpp"
 #include "SocketExceptions.hpp"
 
 class Client {
  public:
   Client(int fd, std::shared_ptr<ServerContext> context);
+  // Client(sockaddr_in address, int fd,
+  //        std::shared_ptr<ServerContext> context);
   ~Client();
 
   int getFd() const;
@@ -30,15 +34,17 @@ class Client {
 
  private:
   int _fd;
+  // sockaddr_in _address;
   std::shared_ptr<ServerContext> _context;
   HttpRequestParser _parser;
   HttpResponse _response;
-  std::unique_ptr<Event> _events;
   bool _shouldSendContinue;
   bool _isReadyForResponse;
   bool _isReadyForRequest;
   bool _shouldCloseConnection;
   std::chrono::system_clock::time_point _lastRequestTime;
+
+  std::shared_ptr<TokenBucket> _rateLimiter;
 
   bool sendDefaultFavicon();
   bool sendWebDocument();
