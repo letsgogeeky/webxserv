@@ -71,6 +71,12 @@ docker-ssh:
 docker-purge:
 	@docker rm -f $(CONTAINER_NAME) || true
 
+docker-stop:
+	@docker stop $(CONTAINER_NAME)
+
+docker-start:
+	@docker start $(CONTAINER_NAME)
+
 clean:
 	@printf "$(UP)$(BEGIN)$(CUT)$(YELLOW)🧹Cleaning object files...$(RESET)"
 	@rm -rf $(OBJ_DIR)/*.o $(OBJ_DIR)/*.d
@@ -88,4 +94,3 @@ fclean:
 	@touch logs/error.log
 
 re: fclean all
-
