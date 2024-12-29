@@ -11,7 +11,7 @@
 #include "../../include/Event.hpp"
 #include "../../include/request/HttpRequestParser.hpp"
 #include "../../include/response/HttpResponse.hpp"
-#include "../../include/rl/algorithms/TokenBucket.hpp"
+#include "../../include/rl/ARateLimiter.hpp"
 #include "ServerContext.hpp"
 #include "SocketExceptions.hpp"
 
@@ -44,7 +44,7 @@ class Client {
   bool _shouldCloseConnection;
   std::chrono::system_clock::time_point _lastRequestTime;
 
-  std::shared_ptr<TokenBucket> _rateLimiter;
+  std::shared_ptr<ARateLimiter> _rateLimiter;
 
   bool sendDefaultFavicon();
   bool sendWebDocument();

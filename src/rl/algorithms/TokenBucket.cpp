@@ -3,19 +3,34 @@
 
 #include <algorithm>
 
-TokenBucket::TokenBucket(int capacity, int rate) {
+TokenBucket::TokenBucket(int capacity, int rate, std::string timeUnit) {
   _capacity = capacity;
   _rate = rate;
   _tokens = capacity;
   _lastRefill = std::chrono::system_clock::now();
   _running = true;
+  _timeUnit = timeUnit;
   _refillThread = std::thread(&TokenBucket::refill, this);
 }
 
-bool TokenBucket::consume(int tokens) {
+void TokenBucket::setTimeUnitInSeconds(std::string timeUnit) {
+  if (timeUnit == "second") {
+    _timeUnitInSeconds = 1;
+  } else if (timeUnit == "minute") {
+    _timeUnitInSeconds = 60;
+  } else if (timeUnit == "hour") {
+    _timeUnitInSeconds = 3600;
+  } else if (timeUnit == "day") {
+    _timeUnitInSeconds = 86400;
+  } else {
+    _timeUnitInSeconds = 1;
+  }
+}
+
+bool TokenBucket::consume() {
   std::lock_guard<std::mutex> lock(_mutex);
-  if (_tokens >= tokens) {
-    _tokens -= tokens;
+  if (_tokens > 0) {
+    _tokens -= 1;
     return true;
   }
   return false;

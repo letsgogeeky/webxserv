@@ -4,16 +4,19 @@
 #include <mutex>
 #include <thread>
 
-class TokenBucket {
+#include "../ARateLimiter.hpp"
+
+class TokenBucket : public ARateLimiter {
  public:
   // Rate in tokens per second
   // Capacity in tokens
-  TokenBucket(int capacity, int rate);
-  bool consume(int tokens);
+  TokenBucket(int capacity, int rate, std::string timeUnit);
+  bool consume();
   void refill();
   ~TokenBucket();
 
  private:
+  void setTimeUnitInSeconds(std::string timeUnit);
   int _capacity;
   int _rate;
   std::atomic<int> _tokens;
@@ -21,4 +24,6 @@ class TokenBucket {
   std::mutex _mutex;
   std::thread _refillThread;
   std::atomic<bool> _running;
+  std::string _timeUnit;
+  uint _timeUnitInSeconds;
 };
