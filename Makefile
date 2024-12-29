@@ -9,7 +9,8 @@ INCLUDE_DIRS	:=	-I./include -I./tester                                  		\
 					-I./include/log													\
 					-I./include/response											\
 					-I./include/networking											\
-					-I./include/rl/algorithms
+					-I./include/rl/algorithms										\
+					-I./include/rl
 TESTER_MAIN 	:= tests/test_server.cpp
 SRC_MAIN 		:= main.cpp
 
@@ -23,7 +24,8 @@ SRC         	:=  $(wildcard src/*.cpp) $(wildcard src/networking/*.cpp) 			\
 					$(wildcard src/parseConfigFile/*.cpp)                			\
 					$(wildcard src/parseConfigFile/SemanticAnalysis/*.cpp)          \
 					$(wildcard src/parseConfigFile/tokenizing/*.cpp)				\
-					$(wildcard src/rl/algorithms/*.cpp)
+					$(wildcard src/rl/algorithms/*.cpp)								\
+					$(wildcard src/rl/*.cpp)
 
 OBJ         	:=  $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC))
 OBJ_MAIN 		:=  $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SRC_MAIN))
@@ -88,4 +90,3 @@ fclean:
 	@touch logs/error.log
 
 re: fclean all
-

@@ -1,15 +1,12 @@
-// also exception, maybe it should be included in the file that
-// is actually using the header ?
-#include <exception>
-#include <map>
-#include <set>
-#include <string>
-// you are not using the sstream header direcly anywhere here
-#include <TokenBucket.hpp>
+#include <ARateLimiter.hpp>
 #include <cstring>
+#include <exception>
 #include <iostream>
+#include <map>
 #include <memory>
+#include <set>
 #include <sstream>
+#include <string>
 
 #include "HttpMaps.hpp"
 #include "HttpRequest.hpp"
@@ -26,7 +23,7 @@ class HttpRequestParser {
                     std::shared_ptr<ServerContext> serverContext);
   HttpRequestParser();
   HttpRequest getHttpRequest();
-  int parse(std::shared_ptr<TokenBucket> &rateLimiter);
+  int parse(std::shared_ptr<ARateLimiter> &rateLimiter);
   int handshake();
   int getStatusCode();
   std::string getLocation();

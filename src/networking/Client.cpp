@@ -12,6 +12,7 @@
 #include "../../include/cgi/CGI.hpp"
 #include "../../include/cgi/CGIFileManager.hpp"
 #include "../../include/log/Log.hpp"
+#include "RateLimiterFactory.hpp"
 #include "ServerContext.hpp"
 
 #define BUFFER_SIZE 4096
@@ -25,7 +26,13 @@ Client::Client(int fd, std::shared_ptr<ServerContext> context) : _fd(fd) {
   _shouldSendContinue = false;
   _isReadyForRequest = true;
   _lastRequestTime = std::chrono::system_clock::now();
-  _rateLimiter = std::make_shared<TokenBucket>(4, 2);
+  _rateLimiter = nullptr;
+  if (_context->_rateLimitValue) {
+    _rateLimiter = RateLimiterFactory::createRateLimiter(
+        _context->_rateLimitAlgorithmValue, _context->_rateLimitBurstValue,
+        _context->_rateLimitRequestsPerUnitValue,
+        _context->_rateLimitUnitValue);
+  }
 }
 
 // Client::Client(sockaddr_in address, int fd,
