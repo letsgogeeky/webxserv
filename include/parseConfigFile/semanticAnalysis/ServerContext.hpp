@@ -27,6 +27,12 @@ class ServerContext {
   std::vector<std::string> _indexValue;
   std::vector<std::string> _serverNameValue;
 
+  bool _rateLimitValue;
+  std::string _rateLimitUnitValue;
+  int _rateLimitRequestsPerUnitValue;
+  int _rateLimitBurstValue;
+  std::string _rateLimitAlgorithmValue;
+
   std::unordered_map<int, std::string> _errorPageValue;
 
   /*_listenValue should store only a vector of ints that contains the ports*/

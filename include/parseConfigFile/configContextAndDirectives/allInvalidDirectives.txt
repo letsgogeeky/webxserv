@@ -390,7 +390,6 @@ quic_retry
 quic_stateless_reset_token
 random
 random_index
-rate_limit
 read_ahead
 real_ip_header
 real_ip_recursive

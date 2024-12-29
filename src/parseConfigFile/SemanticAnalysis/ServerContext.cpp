@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ServerContext.cpp                                  :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ramoussa <ramoussa@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/19 10:17:31 by fgabler           #+#    #+#             */
-/*   Updated: 2024/09/26 03:08:55 by ramoussa         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ServerContext.hpp"
 
 #include <cstring>
@@ -28,6 +16,11 @@ ServerContext::ServerContext() {
   _clientMaxBodySizeValue = SIZE_MAX;
   _requestTimeoutValue = 60;
   _isSetClientMaxBodySizeValue = false;
+  _rateLimitValue = false;
+  _rateLimitUnitValue.clear();
+  _rateLimitRequestsPerUnitValue = 0;
+  _rateLimitBurstValue = 0;
+  _rateLimitAlgorithmValue.clear();
 }
 
 void ServerContext::printServerContent() const noexcept {
@@ -38,6 +31,14 @@ void ServerContext::printServerContent() const noexcept {
   printTypeFormat("root", _rootValue);
   printTypeFormat("request_timeout", _requestTimeoutValue);
   printTypeFormat("upload_dir", _uploadDirValue);
+  if (_rateLimitValue) {
+    printTypeFormat("rate_limit", _rateLimitValue);
+    printTypeFormat("rate_limit_unit", _rateLimitUnitValue);
+    printTypeFormat("rate_limit_requests_per_unit",
+                    _rateLimitRequestsPerUnitValue);
+    printTypeFormat("rate_limit_burst", _rateLimitBurstValue);
+    printTypeFormat("rate_limit_algorithm", _rateLimitAlgorithmValue);
+  }
   vectorPrint(_indexValue, "index");
   vectorPrint(_serverNameValue, "server_name");
   listenPrint();

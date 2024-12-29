@@ -4,3 +4,8 @@ ssl_certificate_key
 root
 upload_dir
 request_timeout
+rate_limit
+rate_limit_unit
+rate_limit_requests_per_unit
+rate_limit_burst
+rate_limit_algorithm

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   semanticAnalysis.cpp                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ramymoussa <ramymoussa@student.42.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 12:06:57 by fgabler           #+#    #+#             */
-/*   Updated: 2024/09/26 00:45:01 by fgabler          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "SemanticAnalysis.hpp"
 
 #include <string.h>
@@ -337,6 +325,22 @@ void SemanticAnalysis::httpSaveDirective() {
     saveMultipleDirectiveValue(_config->_httpContext._proxyCacheValidValue);
 }
 
+bool SemanticAnalysis::extractRateLimitValue(std::string &value) {
+  if (value != "off" && value != "on")
+    throw InvalidServerDirective(getThrowMessage());
+  if (value == "on") return (true);
+  return (false);
+}
+
+int SemanticAnalysis::extractRateLimitIntegerValue(std::string &value) {
+  for (size_t i = 0; i < value.size(); i++) {
+    if (std::isdigit(value[i]) == false) throw InvalidServerDirective(value);
+  }
+  int result = std::stoi(value);
+  if (result < 0) throw InvalidServerDirective(value);
+  return (result);
+}
+
 void SemanticAnalysis::serverSaveDirective() {
   if (isDirectiveInLine(_serverValidDirective) == false) return;
 
@@ -364,6 +368,20 @@ void SemanticAnalysis::serverSaveDirective() {
         _config->_httpContext._serverContext.back()->_serverNameValue);
   else if (canDirectiveBeSaved(TypeToken::UPLOAD_DIR))
     _config->_httpContext._serverContext.back()->_uploadDirValue = value;
+  else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT))
+    _config->_httpContext._serverContext.back()->_rateLimitValue =
+        extractRateLimitValue(value);
+  else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT_UNIT))
+    _config->_httpContext._serverContext.back()->_rateLimitUnitValue = value;
+  else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT_REQUESTS_PER_UNIT))
+    _config->_httpContext._serverContext.back()
+        ->_rateLimitRequestsPerUnitValue = extractRateLimitIntegerValue(value);
+  else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT_BURST))
+    _config->_httpContext._serverContext.back()->_rateLimitBurstValue =
+        extractRateLimitIntegerValue(value);
+  else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT_ALGORITHM))
+    _config->_httpContext._serverContext.back()->_rateLimitAlgorithmValue =
+        value;
   else if (_tokenLine.front()->_type == TypeToken::ERROR_PAGE &&
            _tokenLine.size() == 3)
     errorPageSave();
@@ -601,6 +619,30 @@ bool SemanticAnalysis::isValueEmpty(TypeToken token) const noexcept {
     case TypeToken::REQUEST_TIMEOUT:
       if (_config->_httpContext._serverContext.back()->_requestTimeoutValue ==
           60)
+        return (true);
+      break;
+    case TypeToken::RATE_LIMIT:
+      if (_config->_httpContext._serverContext.back()->_rateLimitValue == false)
+        return (true);
+      break;
+    case TypeToken::RATE_LIMIT_UNIT:
+      if (_config->_httpContext._serverContext.back()
+              ->_rateLimitUnitValue.empty() == true)
+        return (true);
+      break;
+    case TypeToken::RATE_LIMIT_REQUESTS_PER_UNIT:
+      if (_config->_httpContext._serverContext.back()
+              ->_rateLimitRequestsPerUnitValue == 0)
+        return (true);
+      break;
+    case TypeToken::RATE_LIMIT_BURST:
+      if (_config->_httpContext._serverContext.back()->_rateLimitBurstValue ==
+          0)
+        return (true);
+      break;
+    case TypeToken::RATE_LIMIT_ALGORITHM:
+      if (_config->_httpContext._serverContext.back()
+              ->_rateLimitAlgorithmValue.empty() == true)
         return (true);
       break;
     case TypeToken::PROXY_PASS:
