@@ -223,6 +223,17 @@ void Tokenization::directiveIdentification() {
       (*it)->_type = TypeToken::UPLOAD_DIR;
     else if ((*it)->_tokenStr == "request_timeout")
       (*it)->_type = TypeToken::REQUEST_TIMEOUT;
+    // TODO: refactor this to use a map
+    else if ((*it)->_tokenStr == "rate_limit")
+      (*it)->_type = TypeToken::RATE_LIMIT;
+    else if ((*it)->_tokenStr == "rate_limit_unit")
+      (*it)->_type = TypeToken::RATE_LIMIT_UNIT;
+    else if ((*it)->_tokenStr == "rate_limit_requests_per_unit")
+      (*it)->_type = TypeToken::RATE_LIMIT_REQUESTS_PER_UNIT;
+    else if ((*it)->_tokenStr == "rate_limit_burst")
+      (*it)->_type = TypeToken::RATE_LIMIT_BURST;
+    else if ((*it)->_tokenStr == "rate_limit_algorithm")
+      (*it)->_type = TypeToken::RATE_LIMIT_ALGORITHM;
   }
 }
 

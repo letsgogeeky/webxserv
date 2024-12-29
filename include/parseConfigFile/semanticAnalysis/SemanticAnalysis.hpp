@@ -90,6 +90,8 @@ class SemanticAnalysis {
   std::string getIpListenValue(std::string &ipAndPort) const noexcept;
   bool validIpChar(char c) const noexcept;
   int getPortListenValue(std::string &ipAndPort) const noexcept;
+  bool extractRateLimitValue(std::string &value);
+  int extractRateLimitIntegerValue(std::string &value);
   void saveListenValue() const noexcept;
   void listenSetInServerCheck() const;
 

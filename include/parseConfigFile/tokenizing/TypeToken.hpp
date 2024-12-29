@@ -44,7 +44,12 @@ enum class TypeToken {
   DEFAULT = 37,
   PROXY_CACHE_PATH = 38,
   ALLOW_METHODS = 39,
-  VALUE = 40
+  VALUE = 40,
+  RATE_LIMIT = 41,
+  RATE_LIMIT_UNIT = 42,
+  RATE_LIMIT_REQUESTS_PER_UNIT = 43,
+  RATE_LIMIT_BURST = 44,
+  RATE_LIMIT_ALGORITHM = 45
 };
 
 std::ostream &operator<<(std::ostream &outStream, const TypeToken &type);

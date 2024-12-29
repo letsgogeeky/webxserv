@@ -38,6 +38,15 @@ void ServerContext::printServerContent() const noexcept {
   printTypeFormat("root", _rootValue);
   printTypeFormat("request_timeout", _requestTimeoutValue);
   printTypeFormat("upload_dir", _uploadDirValue);
+  if (_rateLimitValue)
+  {
+    printTypeFormat("rate_limit", _rateLimitValue);
+    printTypeFormat("rate_limit_unit", _rateLimitUnitValue);
+    printTypeFormat("rate_limit_requests_per_unit",
+                    _rateLimitRequestsPerUnitValue);
+    printTypeFormat("rate_limit_burst", _rateLimitBurstValue);
+    printTypeFormat("rate_limit_algorithm", _rateLimitAlgorithmValue);
+  }
   vectorPrint(_indexValue, "index");
   vectorPrint(_serverNameValue, "server_name");
   listenPrint();
