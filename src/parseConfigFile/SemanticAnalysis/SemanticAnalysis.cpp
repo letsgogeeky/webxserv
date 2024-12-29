@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   semanticAnalysis.cpp                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: ramymoussa <ramymoussa@student.42.fr>      +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/08/10 12:06:57 by fgabler           #+#    #+#             */
-/*   Updated: 2024/09/26 00:45:01 by fgabler          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "SemanticAnalysis.hpp"
 
 #include <string.h>
@@ -381,14 +369,16 @@ void SemanticAnalysis::serverSaveDirective() {
   else if (canDirectiveBeSaved(TypeToken::UPLOAD_DIR))
     _config->_httpContext._serverContext.back()->_uploadDirValue = value;
   else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT))
-    _config->_httpContext._serverContext.back()->_rateLimitValue = extractRateLimitValue(value);
+    _config->_httpContext._serverContext.back()->_rateLimitValue =
+        extractRateLimitValue(value);
   else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT_UNIT))
     _config->_httpContext._serverContext.back()->_rateLimitUnitValue = value;
   else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT_REQUESTS_PER_UNIT))
     _config->_httpContext._serverContext.back()
         ->_rateLimitRequestsPerUnitValue = extractRateLimitIntegerValue(value);
   else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT_BURST))
-    _config->_httpContext._serverContext.back()->_rateLimitBurstValue = extractRateLimitIntegerValue(value);
+    _config->_httpContext._serverContext.back()->_rateLimitBurstValue =
+        extractRateLimitIntegerValue(value);
   else if (canDirectiveBeSaved(TypeToken::RATE_LIMIT_ALGORITHM))
     _config->_httpContext._serverContext.back()->_rateLimitAlgorithmValue =
         value;
@@ -636,19 +626,23 @@ bool SemanticAnalysis::isValueEmpty(TypeToken token) const noexcept {
         return (true);
       break;
     case TypeToken::RATE_LIMIT_UNIT:
-      if (_config->_httpContext._serverContext.back()->_rateLimitUnitValue.empty() == true)
+      if (_config->_httpContext._serverContext.back()
+              ->_rateLimitUnitValue.empty() == true)
         return (true);
       break;
     case TypeToken::RATE_LIMIT_REQUESTS_PER_UNIT:
-      if (_config->_httpContext._serverContext.back()->_rateLimitRequestsPerUnitValue == 0)
+      if (_config->_httpContext._serverContext.back()
+              ->_rateLimitRequestsPerUnitValue == 0)
         return (true);
       break;
     case TypeToken::RATE_LIMIT_BURST:
-      if (_config->_httpContext._serverContext.back()->_rateLimitBurstValue == 0)
+      if (_config->_httpContext._serverContext.back()->_rateLimitBurstValue ==
+          0)
         return (true);
       break;
     case TypeToken::RATE_LIMIT_ALGORITHM:
-      if (_config->_httpContext._serverContext.back()->_rateLimitAlgorithmValue.empty() == true)
+      if (_config->_httpContext._serverContext.back()
+              ->_rateLimitAlgorithmValue.empty() == true)
         return (true);
       break;
     case TypeToken::PROXY_PASS:

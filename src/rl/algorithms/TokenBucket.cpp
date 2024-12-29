@@ -1,6 +1,8 @@
 
 #include "../../include/rl/algorithms/TokenBucket.hpp"
 
+#include <algorithm>
+
 TokenBucket::TokenBucket(int capacity, int rate) {
   _capacity = capacity;
   _rate = rate;
